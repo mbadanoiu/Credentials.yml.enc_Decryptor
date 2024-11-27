@@ -76,4 +76,4 @@ if __name__ == "__main__":
 		ciphertext,
 		tag)
 
-	print(dec)
+	print(dec.decode('latin-1'))

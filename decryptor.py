@@ -3,6 +3,7 @@
 import os
 import base64
 import sys
+import codecs
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import (
@@ -25,7 +26,7 @@ def file_read(file_path):
 	return content
 
 def uncredentify(credentials_yml_enc):
-	separator = b"--"
+	separator = "--"
 	ciphertext_b64, iv_b64, tag_b64 = credentials_yml_enc.split(separator)
 	ciphertext = base64.b64decode(ciphertext_b64)
 	iv = base64.b64decode(iv_b64)
@@ -33,7 +34,7 @@ def uncredentify(credentials_yml_enc):
 	return (ciphertext, iv, tag)
 
 def unmasterify(master_key):
-	return master_key.decode('hex')
+    return codecs.decode(master_key, 'hex')
 
 def decrypt(key, iv, ciphertext, tag):
 	# Construct a Cipher object, with the key, iv, and additionally the
@@ -75,4 +76,4 @@ if __name__ == "__main__":
 		ciphertext,
 		tag)
 
-	print(dec)
+	print(dec.decode('latin-1'))
